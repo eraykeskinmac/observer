@@ -53,5 +53,3 @@ register({
 ISC License
 
 ---
-
-Developed by Eray Keskinmac
