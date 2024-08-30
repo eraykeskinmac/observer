@@ -1,3 +1,5 @@
+import Flow from "../components/Flow";
+
 export default function Environments(): JSX.Element {
-  return <div>Environments</div>;
+  return <Flow />;
 }

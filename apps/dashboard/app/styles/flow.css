@@ -1,0 +1,175 @@
+.react-flow__node {
+  border-radius: 8px;
+  padding: 10px;
+  color: #fff;
+  font-family: sans-serif;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.react-flow__node-application {
+  background-color: #1e1e1e;
+  border: 1px solid #2e2e2e;
+  width: 200px;
+}
+
+.react-flow__node-collector {
+  background-color: #1e1e1e;
+  border: 1px solid #2e2e2e;
+  width: 180px;
+}
+
+.react-flow__handle {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+
+.react-flow__edge-path {
+  stroke: #4f4f4f;
+  stroke-width: 2;
+}
+
+.react-flow__edge {
+  pointer-events: none;
+}
+
+.react-flow__controls {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.react-flow__controls-button {
+  background-color: #1e1e1e;
+  border: 1px solid #2e2e2e;
+  border-radius: 4px;
+  color: #9ca3af;
+}
+
+.react-flow__controls-button:hover {
+  background-color: #2e2e2e;
+}
+
+.turbo-flow {
+  background-color: #121212;
+}
+
+.node-label {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.node-sublabel {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+.collector-icon {
+  font-size: 20px;
+  margin-right: 8px;
+}
+
+.edgelabel-foreignobject {
+  overflow: visible;
+  pointer-events: none;
+}
+
+.edgelabel-container {
+  background-color: #1e1e1e;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  pointer-events: all;
+  border: 1px solid #2e2e2e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.edgelabel-text {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: #9ca3af;
+}
+
+.react-flow__attribution {
+  background: transparent;
+  color: #555;
+}
+
+.react-flow__minimap {
+  background-color: #1e1e1e;
+}
+
+.react-flow__minimap-mask {
+  fill: rgba(255, 255, 255, 0.1);
+}
+
+.react-flow__minimap-node {
+  fill: #2e2e2e;
+  stroke: none;
+}
+
+.react-flow__edge-textwrapper {
+  pointer-events: all;
+}
+
+.react-flow__edge-textbg {
+  fill: #1e1e1e;
+}
+
+.react-flow__edge-text {
+  fill: #9ca3af;
+  font-size: 10px;
+}
+
+.react-flow__node:focus {
+  outline: none;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #81e6d9;
+}
+
+.react-flow__node.selected {
+  box-shadow: 0 0 0 2px #81e6d9;
+}
+
+.react-flow__nodesselection-rect,
+.react-flow__selection {
+  background: rgba(129, 230, 217, 0.08);
+  border: 1px solid #81e6d9;
+}
+
+.react-flow__handle:hover {
+  background-color: #81e6d9;
+}
+
+.react-flow__edge-path {
+  stroke: #4f4f4f;
+  stroke-width: 2;
+}
+
+.react-flow__edge {
+  pointer-events: none;
+}
+
+.react-flow__edge-interaction {
+  pointer-events: all;
+}
+
+.react-flow__connection-path {
+  stroke: #4f4f4f;
+  stroke-width: 2;
+}
+
+.react-flow__edge.animated path {
+  stroke-dasharray: 5;
+  animation: dashdraw 0.5s linear infinite;
+}
+
+@keyframes dashdraw {
+  from {
+    stroke-dashoffset: 10;
+  }
+}
