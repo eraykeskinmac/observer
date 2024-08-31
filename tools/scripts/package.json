@@ -1,0 +1,12 @@
+{
+  "name": "data-validation",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "validate": "node validate_data_streaming.js"
+  },
+  "dependencies": {
+    "@clickhouse/client": "^0.0.14",
+    "dotenv": "^10.0.0"
+  }
+}
