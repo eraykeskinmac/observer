@@ -1,17 +1,18 @@
 const express = require('express');
-const sdk = require('@eraykeskinmac/infrastack-interview-20240830');
+const { register, DiagLogLevel } = require('@eraykeskinmac/infrastack-interview-20240830');
 const { trace } = require('@opentelemetry/api');
 
-console.log('SDK exports:', Object.keys(sdk));
-
-const { register } = sdk;
+console.log('SDK exports:', Object.keys(require('@eraykeskinmac/infrastack-interview-20240830')));
 
 register({
   endpoint: "http://localhost:4317",
   instruments: ['http', 'express'],
   serviceName: "test-otel-app",
   serviceVersion: "1.0.0",
-  environment: "development"
+  environment: "development",
+  logLevel: DiagLogLevel.DEBUG,
+  compression: "gzip",
+  exporter: "otlp"
 });
 
 console.log('OpenTelemetry SDK initialized');
@@ -39,6 +40,14 @@ app.get('/error', (req, res, next) => {
     span.end();
     next(new Error('This is a test error'));
   }, 50);
+});
+
+app.get('/large-payload', (req, res) => {
+  const span = tracer.startSpan('large-payload-endpoint');
+  const largeData = Buffer.alloc(1024 * 1024, 'a').toString();
+  span.setAttribute('payload.size', largeData.length);
+  span.end();
+  res.json({ message: 'Large payload processed', size: largeData.length });
 });
 
 app.use((err, req, res, next) => {

@@ -11,7 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@eraykeskinmac/infrastack-interview-20240830": "^1.0.2",
+    "@eraykeskinmac/infrastack-interview-20240830": "^1.0.3",
     "express": "^4.19.2"
   }
 }
