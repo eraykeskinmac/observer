@@ -1,6 +1,6 @@
 const express = require('express');
 const { register, DiagLogLevel } = require('@eraykeskinmac/infrastack-interview-20240830');
-const { trace } = require('@opentelemetry/api');
+const { trace, SpanStatusCode } = require('@opentelemetry/api');
 
 console.log('SDK exports:', Object.keys(require('@eraykeskinmac/infrastack-interview-20240830')));
 
@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
   span.setAttribute('custom.attribute', 'test-value');
 
   setTimeout(() => {
+    span.setStatus({ code: SpanStatusCode.OK });
     span.end();
     res.json({ message: 'Hello, OpenTelemetry!' });
   }, 100);
@@ -37,8 +38,13 @@ app.get('/error', (req, res, next) => {
   span.setAttribute('error', true);
 
   setTimeout(() => {
+    const error = new Error('This is a test error');
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: error.message
+    });
     span.end();
-    next(new Error('This is a test error'));
+    next(error);
   }, 50);
 });
 
@@ -46,6 +52,7 @@ app.get('/large-payload', (req, res) => {
   const span = tracer.startSpan('large-payload-endpoint');
   const largeData = Buffer.alloc(1024 * 1024, 'a').toString();
   span.setAttribute('payload.size', largeData.length);
+  span.setStatus({ code: SpanStatusCode.OK });
   span.end();
   res.json({ message: 'Large payload processed', size: largeData.length });
 });
@@ -63,6 +70,7 @@ setInterval(() => {
   const span = tracer.startSpan('test-span');
   span.setAttribute('test.attribute', 'test-value');
   setTimeout(() => {
+    span.setStatus({ code: SpanStatusCode.OK });
     span.end();
   }, Math.random() * 100);
 }, 1000);
