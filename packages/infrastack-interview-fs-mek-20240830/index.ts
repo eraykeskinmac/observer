@@ -5,6 +5,11 @@ import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 import { diag, DiagConsoleLogger, DiagLogLevel } from "@opentelemetry/api";
 import { CompressionAlgorithm } from "@opentelemetry/otlp-exporter-base";
+import { GrpcInstrumentation } from "@opentelemetry/instrumentation-grpc";
+import { RedisInstrumentation } from "@opentelemetry/instrumentation-redis";
+import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
+import { MongoDBInstrumentation } from "@opentelemetry/instrumentation-mongodb";
+import { AmqplibInstrumentation } from "@opentelemetry/instrumentation-amqplib";
 
 interface RegisterOptions {
   endpoint: string;
@@ -29,7 +34,6 @@ export function register(options: RegisterOptions): void {
     exporter,
   } = options;
 
-  // Set up logging
   diag.setLogger(new DiagConsoleLogger(), logLevel || DiagLogLevel.INFO);
 
   const traceExporter = new OTLPTraceExporter({
@@ -37,14 +41,22 @@ export function register(options: RegisterOptions): void {
     compression: compression === "gzip" ? CompressionAlgorithm.GZIP : undefined,
   });
 
-  const instrumentations = getNodeAutoInstrumentations({
-    "@opentelemetry/instrumentation-http": {},
-    "@opentelemetry/instrumentation-express": {},
-    "@opentelemetry/instrumentation-mongodb": {},
-  });
+  const instrumentations = [
+    new GrpcInstrumentation(),
+    new RedisInstrumentation(),
+    new PgInstrumentation(),
+    new MongoDBInstrumentation(),
+    new AmqplibInstrumentation(),
+    ...getNodeAutoInstrumentations({
+      "@opentelemetry/instrumentation-http": {},
+      "@opentelemetry/instrumentation-express": {},
+    }),
+  ];
 
   const filteredInstrumentations = instrumentations.filter((instr) =>
-    instruments.some((i) => instr.instrumentationName.includes(i))
+    instruments.some((i) =>
+      instr.instrumentationName.toLowerCase().includes(i.toLowerCase())
+    )
   );
 
   const sdk = new NodeSDK({
