@@ -1,6 +1,15 @@
 import { Node, Edge } from "@xyflow/react";
 
-export const initialNodes: Node[] = [
+export interface NodeData {
+  label: string;
+  subLabel: "application" | "collector";
+  [key: string]: unknown;
+}
+
+export type FlowNode = Node<NodeData>;
+export type FlowEdge = Edge<{ label: string }>;
+
+export const initialNodes: FlowNode[] = [
   {
     id: "1",
     type: "application",
@@ -27,7 +36,7 @@ export const initialNodes: Node[] = [
   },
 ];
 
-export const initialEdges: Edge[] = [
+export const initialEdges: FlowEdge[] = [
   {
     id: "e1-4",
     source: "1",
