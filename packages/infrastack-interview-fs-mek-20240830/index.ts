@@ -7,10 +7,14 @@ import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions"
 interface RegisterOptions {
   endpoint: string;
   instruments: string[];
+  serviceName?: string;
+  serviceVersion?: string;
+  environment?: string;
 }
 
 export function register(options: RegisterOptions): void {
-  const { endpoint, instruments } = options;
+  const { endpoint, instruments, serviceName, serviceVersion, environment } =
+    options;
 
   const traceExporter = new OTLPTraceExporter({
     url: endpoint,
@@ -29,11 +33,13 @@ export function register(options: RegisterOptions): void {
   const sdk = new NodeSDK({
     resource: new Resource({
       [SemanticResourceAttributes.SERVICE_NAME]:
-        process.env.SERVICE_NAME || "unknown_service",
+        serviceName || process.env.SERVICE_NAME || "unknown_service",
       [SemanticResourceAttributes.SERVICE_VERSION]:
-        process.env.SERVICE_VERSION || "0.1.0",
+        serviceVersion || process.env.SERVICE_VERSION || "0.1.0",
       [SemanticResourceAttributes.SERVICE_INSTANCE_ID]:
         process.env.POD_NAME || `${Date.now()}`,
+      [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]:
+        environment || process.env.NODE_ENV || "development",
     }),
     traceExporter,
     instrumentations: filteredInstrumentations,
