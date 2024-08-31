@@ -3,6 +3,8 @@ import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentation
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-grpc";
 import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
+import { diag, DiagConsoleLogger, DiagLogLevel } from "@opentelemetry/api";
+import { CompressionAlgorithm } from "@opentelemetry/otlp-exporter-base";
 
 interface RegisterOptions {
   endpoint: string;
@@ -10,14 +12,29 @@ interface RegisterOptions {
   serviceName?: string;
   serviceVersion?: string;
   environment?: string;
+  logLevel?: DiagLogLevel;
+  compression?: "gzip" | "none";
+  exporter?: "otlp";
 }
 
 export function register(options: RegisterOptions): void {
-  const { endpoint, instruments, serviceName, serviceVersion, environment } =
-    options;
+  const {
+    endpoint,
+    instruments,
+    serviceName,
+    serviceVersion,
+    environment,
+    logLevel,
+    compression,
+    exporter,
+  } = options;
+
+  // Set up logging
+  diag.setLogger(new DiagConsoleLogger(), logLevel || DiagLogLevel.INFO);
 
   const traceExporter = new OTLPTraceExporter({
     url: endpoint,
+    compression: compression === "gzip" ? CompressionAlgorithm.GZIP : undefined,
   });
 
   const instrumentations = getNodeAutoInstrumentations({
@@ -50,8 +67,10 @@ export function register(options: RegisterOptions): void {
   process.on("SIGTERM", () => {
     sdk
       .shutdown()
-      .then(() => console.log("Tracing terminated"))
-      .catch((error) => console.log("Error terminating tracing", error))
+      .then(() => diag.info("Tracing terminated"))
+      .catch((error) => diag.error("Error terminating tracing", error))
       .finally(() => process.exit(0));
   });
 }
+
+export { DiagLogLevel };

@@ -1,6 +1,6 @@
 {
   "name": "@eraykeskinmac/infrastack-interview-20240830",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "OpenTelemetry SDK wrapper",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
