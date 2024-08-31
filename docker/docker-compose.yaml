@@ -1,17 +1,22 @@
 version: "3.8"
-
 services:
   otel-collector:
-    build:
-      context: ./otel-collector
-      dockerfile: Dockerfile
+    image: otel/opentelemetry-collector-contrib:0.90.1
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
       - "4317:4317" # OTLP gRPC receiver
-      - "4318:4318" # OTLP http receiver
+      - "4318:4318" # OTLP HTTP receiver
       - "8888:8888" # Prometheus metrics exposed by the collector
       - "8889:8889" # Prometheus exporter metrics
     networks:
       - otel-network
+    environment:
+      - CLICKHOUSE_ENDPOINT=${CLICKHOUSE_ENDPOINT}
+      - CLICKHOUSE_DATABASE=${CLICKHOUSE_DATABASE}
+      - CLICKHOUSE_USERNAME=${CLICKHOUSE_USERNAME}
+      - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD}
 
 networks:
   otel-network:
