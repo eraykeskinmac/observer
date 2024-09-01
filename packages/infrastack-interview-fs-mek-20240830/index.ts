@@ -5,11 +5,6 @@ import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 import { diag, DiagConsoleLogger, DiagLogLevel } from "@opentelemetry/api";
 import { CompressionAlgorithm } from "@opentelemetry/otlp-exporter-base";
-import { GrpcInstrumentation } from "@opentelemetry/instrumentation-grpc";
-import { RedisInstrumentation } from "@opentelemetry/instrumentation-redis";
-import { PgInstrumentation } from "@opentelemetry/instrumentation-pg";
-import { MongoDBInstrumentation } from "@opentelemetry/instrumentation-mongodb";
-import { AmqplibInstrumentation } from "@opentelemetry/instrumentation-amqplib";
 
 interface RegisterOptions {
   endpoint: string;
@@ -31,7 +26,6 @@ export function register(options: RegisterOptions): void {
     environment,
     logLevel,
     compression,
-    exporter,
   } = options;
 
   diag.setLogger(new DiagConsoleLogger(), logLevel || DiagLogLevel.INFO);
@@ -42,11 +36,6 @@ export function register(options: RegisterOptions): void {
   });
 
   const instrumentations = [
-    new GrpcInstrumentation(),
-    new RedisInstrumentation(),
-    new PgInstrumentation(),
-    new MongoDBInstrumentation(),
-    new AmqplibInstrumentation(),
     ...getNodeAutoInstrumentations({
       "@opentelemetry/instrumentation-http": {},
       "@opentelemetry/instrumentation-express": {},

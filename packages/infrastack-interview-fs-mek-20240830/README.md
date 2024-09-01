@@ -5,7 +5,7 @@ A simple wrapper for OpenTelemetry SDKs to easily integrate telemetry into your 
 ## Features
 
 - Easy setup for OpenTelemetry
-- Support for HTTP, Express, gRPC, Redis, PostgreSQL, MongoDB, and AMQP instrumentations
+- Support for HTTP, Express
 - Configurable collector endpoint
 - Customizable service name, version, and environment
 - Configurable log levels
