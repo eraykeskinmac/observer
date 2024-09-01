@@ -18,6 +18,33 @@ services:
       - CLICKHOUSE_USERNAME=${CLICKHOUSE_USERNAME}
       - CLICKHOUSE_PASSWORD=${CLICKHOUSE_PASSWORD}
 
+  user-service:
+    build: ../apps/user-service
+    ports:
+      - "4001:4001"
+    networks:
+      - otel-network
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+
+  order-service:
+    build: ../apps/order-service
+    ports:
+      - "4002:4002"
+    networks:
+      - otel-network
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+
+  product-service:
+    build: ../apps/product-service
+    ports:
+      - "4003:4003"
+    networks:
+      - otel-network
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+
 networks:
   otel-network:
     driver: bridge
