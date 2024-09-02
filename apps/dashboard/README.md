@@ -63,9 +63,8 @@ The Dashboard application is a Next.js project that provides a user interface fo
 - **app**: Contains the main application code.
   - **components**: Reusable React components.
   - **services**: Service-specific pages and components.
-  - **styles**: Global styles and Tailwind CSS configuration.
+  - **styles**: Global styles
 - **public**: Static assets.
-- **pages**: Next.js pages.
 - **.eslintrc.js**: ESLint configuration.
 - **next.config.js**: Next.js configuration.
 - **tailwind.config.js**: Tailwind CSS configuration.
