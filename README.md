@@ -94,9 +94,9 @@ This project is structured as a Turborepo application with multiple services and
 
 The services will be available at the following URLs:
 
-- Order Service: [http://localhost:4002](http://localhost:4002)
-- Product Service: [http://localhost:4003](http://localhost:4003)
-- User Service: [http://localhost:4001](http://localhost:4001)
+- Order Service: [http://localhost:4002](http://localhost:4002/orders)
+- Product Service: [http://localhost:4003](http://localhost:4003/products)
+- User Service: [http://localhost:4001](http://localhost:4001/users)
 
 ## Project Structure
 
