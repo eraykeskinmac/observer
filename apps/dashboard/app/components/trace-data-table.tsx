@@ -32,95 +32,19 @@ import {
   TableRow,
 } from "@ui/components/table";
 
-const data: Trace[] = [
-  {
-    time: "Jun 05 05:53:23.681",
-    service: "Infrastack-Frontend",
-    duration: "249ms 962µs",
-    spanName: "clickhouse:query",
-    method: "",
-    status: "",
-    kind: "INTERNAL",
-  },
-  {
-    time: "Jun 05 05:53:23.681",
-    service: "Infrastack-Frontend",
-    duration: "249ms 962µs",
-    spanName: "clickhouse:query",
-    method: "",
-    status: "",
-    kind: "INTERNAL",
-  },
-  {
-    time: "Jun 05 05:53:23.681",
-    service: "Infrastack-Frontend",
-    duration: "249ms 962µs",
-    spanName: "clickhouse:query",
-    method: "",
-    status: "",
-    kind: "INTERNAL",
-  },
-  {
-    time: "Jun 05 05:53:23.681",
-    service: "Infrastack-Frontend",
-    duration: "249ms 962µs",
-    spanName: "clickhouse:query",
-    method: "",
-    status: "",
-    kind: "INTERNAL",
-  },
-  {
-    time: "Jun 05 05:53:23.681",
-    service: "Infrastack-Frontend",
-    duration: "249ms 962µs",
-    spanName: "clickhouse:query",
-    method: "",
-    status: "",
-    kind: "INTERNAL",
-  },
-  {
-    time: "Jun 05 05:53:23.681",
-    service: "Infrastack-Frontend",
-    duration: "249ms 962µs",
-    spanName: "clickhouse:query",
-    method: "",
-    status: "",
-    kind: "INTERNAL",
-  },
-
-  {
-    time: "Jun 05 05:53:23.681",
-    service: "Infrastack-Frontend",
-    duration: "249ms 962µs",
-    spanName: "clickhouse:query",
-    method: "",
-    status: "",
-    kind: "INTERNAL",
-  },
-  {
-    time: "Jun 05 05:53:23.681",
-    service: "Infrastack-Frontend",
-    duration: "249ms 962µs",
-    spanName: "clickhouse:query",
-    method: "",
-    status: "",
-    kind: "INTERNAL",
-  },
-];
-
 export type Trace = {
-  time: string;
-  service: string;
-  duration: string;
-  spanName: string;
-  method: string;
-  status: string;
-  kind: string;
+  Timestamp: string;
+  ServiceName: string;
+  Duration: number;
+  SpanKind: string;
+  StatusCode: string;
+  SpanName: string;
+  TraceId: string;
 };
 
 export const columns: ColumnDef<Trace>[] = [
   {
-    accessorKey: "time",
+    accessorKey: "Timestamp",
     header: ({ column }) => {
       return (
         <Button
@@ -135,19 +59,12 @@ export const columns: ColumnDef<Trace>[] = [
     cell: ({ row }) => (
       <div className="flex items-center">
         <div className="h-4 w-1 bg-green-500 mr-2"></div>
-        <div>{row.getValue("time")}</div>
+        <div>{new Date(row.getValue("Timestamp")).toLocaleString()}</div>
       </div>
     ),
   },
   {
-    accessorKey: "service",
-    header: "Service",
-    cell: ({ row }) => (
-      <div className="font-medium">{row.getValue("service")}</div>
-    ),
-  },
-  {
-    accessorKey: "duration",
+    accessorKey: "Duration",
     header: ({ column }) => {
       return (
         <Button
@@ -159,44 +76,20 @@ export const columns: ColumnDef<Trace>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div>{row.getValue("duration")}</div>,
+    cell: ({ row }) => <div>{`${row.getValue("Duration")} ms`}</div>,
   },
   {
-    accessorKey: "spanName",
+    accessorKey: "SpanName",
     header: "Span Name",
     cell: ({ row }) => (
-      <div className="text-green-500">{row.getValue("spanName")}</div>
+      <div className="text-green-500">{row.getValue("SpanName")}</div>
     ),
   },
   {
-    accessorKey: "method",
-    header: "Method",
-    cell: ({ row }) => {
-      const method = row.getValue("method") as string;
-      return method ? (
-        <div className="bg-zinc-700 text-white px-2 py-1 rounded text-xs inline-block">
-          {method}
-        </div>
-      ) : null;
-    },
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.getValue("status") as string;
-      return status ? (
-        <div className="bg-green-500 text-white px-2 py-1 rounded text-xs inline-block">
-          {status}
-        </div>
-      ) : null;
-    },
-  },
-  {
-    accessorKey: "kind",
+    accessorKey: "SpanKind",
     header: "Kind",
     cell: ({ row }) => {
-      const kind = row.getValue("kind") as string;
+      const kind = row.getValue("SpanKind") as string;
       const bgColor = kind === "INTERNAL" ? "bg-purple-500" : "bg-blue-500";
       return (
         <div
@@ -207,15 +100,52 @@ export const columns: ColumnDef<Trace>[] = [
       );
     },
   },
+  {
+    accessorKey: "StatusCode",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.getValue("StatusCode") as string;
+      const bgColor =
+        status === "STATUS_CODE_OK" ? "bg-green-500" : "bg-red-500";
+      return (
+        <div
+          className={`${bgColor} text-white px-2 py-1 rounded text-xs inline-block`}
+        >
+          {status}
+        </div>
+      );
+    },
+  },
 ];
 
-export default function TraceDataTable() {
+interface TraceDataTableProps {
+  serviceName: string;
+}
+
+export default function TraceDataTable({ serviceName }: TraceDataTableProps) {
+  const [data, setData] = React.useState<Trace[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
+
+  React.useEffect(() => {
+    async function fetchTraceData() {
+      try {
+        const response = await fetch(
+          `/api/trace-details?serviceName=${encodeURIComponent(serviceName)}`
+        );
+        const traceData = await response.json();
+        setData(traceData);
+      } catch (error) {
+        console.error("Error fetching trace data:", error);
+      }
+    }
+
+    fetchTraceData();
+  }, [serviceName]);
 
   const table = useReactTable({
     data,
@@ -240,10 +170,10 @@ export default function TraceDataTable() {
         <Input
           placeholder="Filter span names..."
           value={
-            (table.getColumn("spanName")?.getFilterValue() as string) ?? ""
+            (table.getColumn("SpanName")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
-            table.getColumn("spanName")?.setFilterValue(event.target.value)
+            table.getColumn("SpanName")?.setFilterValue(event.target.value)
           }
           className="max-w-sm bg-zinc-800 text-zinc-100 border-zinc-700"
         />

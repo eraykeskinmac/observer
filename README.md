@@ -78,6 +78,26 @@ This project is structured as a Turborepo application with multiple services and
 
 3. Open [http://localhost:3001](http://localhost:3001) in your browser.
 
+### Running the Microservices
+
+1. Navigate to the root directory of the project:
+
+   ```bash
+   cd ../../
+   ```
+
+2. Start the services using Docker Compose:
+
+   ```bash
+   docker-compose up -d
+   ```
+
+The services will be available at the following URLs:
+
+- Order Service: [http://localhost:4002](http://localhost:4002)
+- Product Service: [http://localhost:4003](http://localhost:4003)
+- User Service: [http://localhost:4001](http://localhost:4001)
+
 ## Project Structure
 
 - **apps**: Contains the main applications.

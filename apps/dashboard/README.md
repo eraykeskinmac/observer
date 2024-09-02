@@ -1,28 +1,79 @@
+# Dashboard
+
+The Dashboard application is a Next.js project that provides a user interface for visualizing telemetry data collected via OpenTelemetry SDKs. It features a service map, service list, and detailed views for specific telemetry data.
+
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-pnpm dev
-```
+- Node.js >= 18
+- pnpm
 
-Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Navigate to the `apps/dashboard` directory:
 
-To create [API routes](https://nextjs.org/docs/app/building-your-application/routing/router-handlers) add an `api/` directory to the `app/` directory with a `route.ts` file. For individual endpoints, create a subfolder in the `api` directory, like `api/hello/route.ts` would map to [http://localhost:3001/api/hello](http://localhost:3001/api/hello).
+   ```bash
+   cd apps/dashboard
+   ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   pnpm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn/foundations/about-nextjs) - an interactive Next.js tutorial.
+3. Set up environment variables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+   Create a `.env` file in the `apps/dashboard` directory and add your ClickHouse credentials:
 
-## Deploy on Vercel
+   ```bash
+   CLICKHOUSE_ENDPOINT=your_endpoint_here
+   CLICKHOUSE_DATABASE=your_database_here
+   CLICKHOUSE_USERNAME=your_username_here
+   CLICKHOUSE_PASSWORD=your_password_here
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_source=github.com&utm_medium=referral&utm_campaign=turborepo-readme) from the creators of Next.js.
+### Running the Development Server
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Start the development server:
+
+   ```bash
+   pnpm dev
+   ```
+
+2. Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+
+### Building for Production
+
+1. Build the application:
+
+   ```bash
+   pnpm build
+   ```
+
+2. Start the production server:
+
+   ```bash
+   pnpm start
+   ```
+
+## Project Structure
+
+- **app**: Contains the main application code.
+  - **components**: Reusable React components.
+  - **services**: Service-specific pages and components.
+  - **styles**: Global styles and Tailwind CSS configuration.
+- **public**: Static assets.
+- **pages**: Next.js pages.
+- **.eslintrc.js**: ESLint configuration.
+- **next.config.js**: Next.js configuration.
+- **tailwind.config.js**: Tailwind CSS configuration.
+- **tsconfig.json**: TypeScript configuration.
+
+## Key Features
+
+- **Service Map**: Visualizes services as nodes and their connections using React Flow.
+- **Service List**: Displays a list of services with key metrics.
+- **Detailed View**: Shows traces and metrics for each service.
+- **AI-powered Assistant**: Uses Vercel AI SDK to provide insights and answer queries about the telemetry data.

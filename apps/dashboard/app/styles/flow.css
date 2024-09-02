@@ -13,9 +13,12 @@
 }
 
 .react-flow__node-collector {
-  background-color: #1e1e1e;
-  border: 1px solid #2e2e2e;
-  width: 180px;
+  background-color: #000;
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .react-flow__handle {
@@ -65,7 +68,7 @@
 
 .collector-icon {
   font-size: 20px;
-  margin-right: 8px;
+  margin-bottom: 8px;
 }
 
 .edgelabel-foreignobject {

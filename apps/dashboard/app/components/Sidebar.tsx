@@ -15,7 +15,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { href: "/environments", icon: Telescope, label: "Environments" },
+    { href: "/services", icon: Telescope, label: "Services" },
     { href: "/settings", icon: Settings, label: "Settings" },
   ];
 

@@ -1,5 +1,5 @@
 import Flow from "../components/flow";
 
-export default function Environments(): JSX.Element {
+export default function Services(): JSX.Element {
   return <Flow />;
 }
