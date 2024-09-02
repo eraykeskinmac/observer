@@ -74,7 +74,7 @@ export default function Flow() {
           id: "collector",
           type: "collector",
           position: { x: 400, y: 400 },
-          data: { label: "InfraStack AI", subLabel: "collector" },
+          data: { label: "Observer AI", subLabel: "collector" },
         };
 
         const applicationNodes: CustomNode[] = serviceNames.map(
