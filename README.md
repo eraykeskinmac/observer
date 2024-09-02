@@ -187,4 +187,4 @@ The OpenTelemetry Collector is configured to collect and export telemetry data.
 
 The tools directory contains utility scripts and tools for the project.
 
-- **Validation Scripts**: Contains scripts for data validation and other utilities.
+- **Validation Scripts**: Contains scripts for data validation and other utilities. Refer to the [Tools README](packages/tools/scripts/README.md) for setup instructions and details.
