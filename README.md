@@ -181,8 +181,7 @@ The Infrastack Interview FS MEK 20240830 package is a wrapper for the OpenTeleme
 
 The OpenTelemetry Collector is configured to collect and export telemetry data.
 
-- **Getting Started**: Refer to the [OpenTelemetry Collector README](docker/otel-collector/README.md) for setup instructions.
-- **Configuration**: The collector configuration can be found in the [otel-collector-config.yaml](docker/otel-collector/otel-collector-config.yaml) file.
+- **Configuration**: The collector example configuration can be found in the [otel-collector-config.yaml](docker/otel-collector/otel-collector-config.example.yaml) file.
 
 ## Tools
 
