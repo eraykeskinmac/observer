@@ -7,7 +7,7 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
-    "@eraykeskinmac/infrastack-interview-20240830": "^1.0.5",
+    "@eraykeskinmac/infrastack-interview-20240830": "^1.0.6",
     "express": "^4.19.2"
   }
 }
