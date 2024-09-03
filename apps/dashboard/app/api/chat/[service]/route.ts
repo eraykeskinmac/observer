@@ -8,31 +8,38 @@ const openai = new OpenAI({
 });
 
 const tableSchema = `
-CREATE TABLE otel_traces (
-  Timestamp DateTime64(9),
-  TraceId String,
-  SpanId String,
-  ParentSpanId String,
-  TraceState String,
-  SpanName LowCardinality(String),
-  SpanKind LowCardinality(String),
-  ServiceName LowCardinality(String),
-  ResourceAttributes Map(LowCardinality(String), String),
-  ScopeName String,
-  ScopeVersion String,
-  SpanAttributes Map(LowCardinality(String), String),
-  Duration Int64,
-  StatusCode LowCardinality(String),
-  StatusMessage String,
-  Events.Timestamp Array(DateTime64(9)),
-  Events.Name Array(LowCardinality(String)),
-  Events.Attributes Array(Map(LowCardinality(String), String)),
-  Links.TraceId Array(String),
-  Links.SpanId Array(String),
-  Links.TraceState Array(String),
-  Links.Attributes Array(Map(LowCardinality(String), String))
+CREATE TABLE IF NOT EXISTS otel_traces
+(
+    Timestamp DateTime64(9),
+    TraceId String,
+    SpanId String,
+    ParentSpanId String,
+    TraceState String,
+    SpanName String,
+    SpanKind String,
+    ServiceName String,
+    ResourceAttributes Map(String, String),
+    ScopeName String,
+    ScopeVersion String,
+    SpanAttributes Map(String, String),
+    Duration Int64,
+    StatusCode String,
+    StatusMessage String,
+    Events Nested
+    (
+        Timestamp DateTime64(9),
+        Name String,
+        Attributes Map(String, String)
+    ),
+    Links Nested
+    (
+        TraceId String,
+        SpanId String,
+        TraceState String,
+        Attributes Map(String, String)
+    )
 ) ENGINE = MergeTree()
-ORDER BY (ServiceName, Timestamp)
+ORDER BY (ServiceName, TraceId, SpanId);
 `;
 
 export async function POST(
@@ -73,7 +80,10 @@ Do not provide any explanation, just the SQL queries.`,
     ],
   });
 
-  const sqlQueries = sqlQueryResponse.choices[0]?.message?.content;
+  let sqlQueries = sqlQueryResponse.choices[0]?.message?.content?.trim() ?? "";
+
+  // Remove any additional text or explanation from the SQL queries
+  sqlQueries = sqlQueries.replace(/^Here is your SQL query.*?\n\n/, "").trim();
 
   if (!sqlQueries) {
     throw new Error("Failed to generate SQL queries");
@@ -83,7 +93,6 @@ Do not provide any explanation, just the SQL queries.`,
 
   let queryResults = [];
   try {
-    // Assuming sqlQueries contains multiple queries separated by semicolons
     const queries = sqlQueries
       .split(";")
       .filter((query) => query.trim() !== "");

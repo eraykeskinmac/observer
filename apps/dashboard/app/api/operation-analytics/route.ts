@@ -14,20 +14,12 @@ export async function GET(request: Request) {
       query: `
         SELECT
           toStartOfMinute(Timestamp) AS minute,
-          CASE
-            WHEN StatusCode = 'STATUS_CODE_OK' THEN 'OK'
-            WHEN StatusCode = 'STATUS_CODE_ERROR' THEN 'ERROR'
-            ELSE 'UNSET'
-          END AS GroupedStatus,
-          count() AS count
-        FROM
-          otel_traces
+          SpanName,
+          count(*) AS operation_count
+        FROM otel_traces
         WHERE ServiceName = {serviceName:String}
-        GROUP BY
-          minute,
-          GroupedStatus
-        ORDER BY
-          minute
+        GROUP BY minute, SpanName
+        ORDER BY minute, operation_count DESC
       `,
       format: "JSONEachRow",
       query_params: {
@@ -36,16 +28,13 @@ export async function GET(request: Request) {
     });
 
     const data = await result.json();
-
     if (!data) {
       throw new Error("Empty response from ClickHouse");
     }
-
-    console.log("Fetched status code counts from ClickHouse:", data);
-
+    console.log("Fetched operation analytics from ClickHouse:", data);
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error fetching status code counts from ClickHouse:", error);
+    console.error("Error fetching operation analytics from ClickHouse:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

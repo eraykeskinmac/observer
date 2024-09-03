@@ -2,11 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ServiceSelect } from "../../components/services-select";
-import Charts from "../../components/charts";
-import ChartLine from "../../components/charts-line";
+
 import TraceDataTable from "../../components/trace-data-table";
-import { ChartsBar } from "../../components/charts-bar";
 import { CopilotChat } from "../../components/copilot-chat";
+import Charts from "../../components/charts";
+import ChartsLine from "../../components/charts-line";
+import ChartsBar from "../../components/charts-bar";
 
 interface ServiceData {
   ServiceName: string;
@@ -73,7 +74,7 @@ export default function ServiceDetailPage({
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <Charts serviceName={selectedService} />
             <ChartsBar serviceName={selectedService} />
-            <ChartLine serviceName={selectedService} />
+            <ChartsLine serviceName={selectedService} />
           </div>
         </div>
         <div>

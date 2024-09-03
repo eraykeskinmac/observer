@@ -33,8 +33,9 @@ interface ServiceName {
 }
 
 interface ServiceEvent {
-  ServiceName: string;
-  SpanCount: number;
+  minute: string;
+  SpanKind: string;
+  count: number;
 }
 
 type CustomNodeData = {
@@ -79,9 +80,10 @@ export default function Flow() {
 
         const applicationNodes: CustomNode[] = serviceNames.map(
           (item, index) => {
-            const eventData = serviceEvents.find(
-              (event) => event.ServiceName === item.ServiceName
-            );
+            const totalEvents = serviceEvents
+              .filter((event) => event.SpanKind === "SERVER")
+              .reduce((sum, event) => sum + event.count, 0);
+
             return {
               id: `node-${index}`,
               type: "application",
@@ -89,7 +91,7 @@ export default function Flow() {
               data: {
                 label: item.ServiceName,
                 subLabel: "application",
-                events: eventData ? eventData.SpanCount : 0,
+                events: totalEvents,
               },
             };
           }

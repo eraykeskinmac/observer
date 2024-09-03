@@ -1,18 +1,25 @@
 import { NextResponse } from "next/server";
 import client from "../client";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const serviceName = searchParams.get("serviceName");
   try {
     const result = await client.query({
       query: `
     SELECT
-      ServiceName,
-      COUNT(DISTINCT TraceId) AS SpanCount
+    ServiceName,
+    COUNT(DISTINCT TraceId) AS SpanCount
     FROM default.otel_traces
-    WHERE Timestamp >= now() - INTERVAL 1000 MINUTE
-    GROUP BY ServiceName
+    WHERE
+     ServiceName = {serviceName:String}
+      GROUP BY ServiceName
+
       `,
       format: "JSONEachRow",
+      query_params: {
+        serviceName: serviceName,
+      },
     });
 
     const data = await result.json();

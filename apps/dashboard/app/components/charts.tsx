@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import {
   Line,
@@ -9,46 +7,78 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
-  Area,
+  Legend,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@ui/components/card";
 
-interface SpanCountData {
+interface OperationAnalyticsData {
   minute: string;
-  span_count: number;
+  SpanName: string;
+  operation_count: number;
 }
 
+interface ChartData {
+  time: string;
+  [key: string]: string | number;
+}
+
+const COLORS = [
+  "#8884d8",
+  "#82ca9d",
+  "#ffc658",
+  "#ff8042",
+  "#8dd1e1",
+  "#a4de6c",
+  "#d0ed57",
+  "#ffbb28",
+  "#ff7300",
+  "#aabbcc",
+];
+
 export default function Charts({ serviceName }: { serviceName: string }) {
-  const [chartData, setChartData] = useState<SpanCountData[]>([]);
+  const [chartData, setChartData] = useState<ChartData[]>([]);
+  const [operations, setOperations] = useState<string[]>([]);
 
   useEffect(() => {
-    async function fetchSpanCounts() {
+    async function fetchOperationAnalytics() {
       try {
         const response = await fetch(
-          `/api/request-volume?serviceName=${encodeURIComponent(serviceName)}`
+          `/api/operation-analytics?serviceName=${encodeURIComponent(serviceName)}`
         );
-        const data = await response.json();
-        setChartData(
-          data.map((item: SpanCountData) => ({
-            time: new Date(item.minute).toLocaleTimeString(),
-            spans: item.span_count,
-          }))
+        const data: OperationAnalyticsData[] = await response.json();
+
+        const groupedData = data.reduce<Record<string, ChartData>>(
+          (acc, item) => {
+            const time = new Date(item.minute).toLocaleTimeString();
+            if (!acc[time]) {
+              acc[time] = { time };
+            }
+            acc[time][item.SpanName] = item.operation_count;
+            return acc;
+          },
+          {}
         );
+
+        const uniqueOperations = Array.from(
+          new Set(data.map((item) => item.SpanName))
+        );
+        setOperations(uniqueOperations);
+        setChartData(Object.values(groupedData));
       } catch (error) {
-        console.error("Error fetching span counts:", error);
+        console.error("Error fetching operation analytics:", error);
       }
     }
 
-    fetchSpanCounts();
+    fetchOperationAnalytics();
   }, [serviceName]);
 
   return (
     <Card className="w-full h-[400px] bg-zinc-950 text-zinc-50">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-base font-normal flex items-center">
-          <span className="font-medium mr-1">Spans</span>
+          <span className="font-medium mr-1">Operation Analytics</span>
           <span className="mx-2 text-zinc-500">/</span>
-          <span className="text-zinc-400 mr-1">Count</span>
+          <span className="text-zinc-400 mr-1">Count per Operation</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="pb-4">
@@ -58,12 +88,6 @@ export default function Charts({ serviceName }: { serviceName: string }) {
               data={chartData}
               margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
             >
-              <defs>
-                <linearGradient id="spanGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-                </linearGradient>
-              </defs>
               <CartesianGrid
                 strokeDasharray="3 3"
                 vertical={false}
@@ -81,7 +105,6 @@ export default function Charts({ serviceName }: { serviceName: string }) {
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                tickFormatter={(value) => `${value}`}
               />
               <Tooltip
                 contentStyle={{
@@ -90,24 +113,21 @@ export default function Charts({ serviceName }: { serviceName: string }) {
                   borderRadius: "6px",
                 }}
                 itemStyle={{ color: "#ffffff" }}
-                formatter={(value) => [`${value} spans`, "Count"]}
+                formatter={(value) => [`${value} operations`, "Count"]}
                 labelFormatter={(label) => `Time: ${label}`}
               />
-              <Area
-                type="monotone"
-                dataKey="spans"
-                stroke="#8884d8"
-                fillOpacity={1}
-                fill="url(#spanGradient)"
-              />
-              <Line
-                type="monotone"
-                dataKey="spans"
-                stroke="#8884d8"
-                strokeWidth={2}
-                dot={false}
-                activeDot={{ r: 8, strokeWidth: 2 }}
-              />
+              <Legend />
+              {operations.map((operation, index) => (
+                <Line
+                  key={operation}
+                  type="monotone"
+                  dataKey={operation}
+                  stroke={COLORS[index % COLORS.length]}
+                  strokeWidth={2}
+                  dot={false}
+                  activeDot={{ r: 8, strokeWidth: 2 }}
+                />
+              ))}
             </LineChart>
           </ResponsiveContainer>
         </div>

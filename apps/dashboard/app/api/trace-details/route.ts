@@ -6,7 +6,9 @@ export async function GET(request: Request) {
   const serviceName = searchParams.get("serviceName");
 
   if (!serviceName) {
-    return new NextResponse("Service name is required", { status: 400 });
+    return new NextResponse("Service name and Trace ID are required", {
+      status: 400,
+    });
   }
 
   try {
@@ -15,26 +17,19 @@ export async function GET(request: Request) {
         SELECT
           Timestamp,
           ServiceName,
-          Duration,
-          SpanKind,
-          StatusCode,
           SpanName,
-          TraceId
+          SpanId,
+          ParentSpanId,
+          TraceId,
+          SpanKind,
+          Duration,
+          StatusCode
         FROM
-          default.otel_traces
+          otel_traces
         WHERE
           ServiceName = {serviceName:String}
-        GROUP BY
-          Timestamp,
-          ServiceName,
-          SpanKind,
-          Duration,
-          StatusCode,
-          SpanName,
-          TraceId
         ORDER BY
-          Timestamp DESC
-        LIMIT 100
+          Timestamp ASC
       `,
       format: "JSONEachRow",
       query_params: {
@@ -43,16 +38,13 @@ export async function GET(request: Request) {
     });
 
     const data = await result.json();
-
     if (!Array.isArray(data) || data.length === 0) {
       throw new Error("Empty or invalid response from ClickHouse");
     }
-
-    console.log(`Fetched trace data from ClickHouse for ${serviceName}`);
-
+    console.log(`Fetched trace details from ClickHouse for ${serviceName}`);
     return NextResponse.json(data);
   } catch (error) {
-    console.error("Error fetching trace data from ClickHouse:", error);
+    console.error("Error fetching trace details from ClickHouse:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

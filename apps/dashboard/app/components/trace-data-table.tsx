@@ -90,12 +90,13 @@ export const columns: ColumnDef<Trace>[] = [
     header: "Kind",
     cell: ({ row }) => {
       const kind = row.getValue("SpanKind") as string;
-      const bgColor = kind === "INTERNAL" ? "bg-purple-500" : "bg-blue-500";
+      const bgColor =
+        kind === "SPAN_KIND_INTERNAL" ? "bg-purple-500" : "bg-blue-500";
       return (
         <div
           className={`${bgColor} text-white px-2 py-1 rounded text-xs inline-block`}
         >
-          {kind}
+          {kind.replace("SPAN_KIND_", "")}
         </div>
       );
     },
@@ -111,18 +112,18 @@ export const columns: ColumnDef<Trace>[] = [
         <div
           className={`${bgColor} text-white px-2 py-1 rounded text-xs inline-block`}
         >
-          {status}
+          {status.replace("STATUS_CODE_", "")}
         </div>
       );
     },
   },
 ];
 
-interface TraceDataTableProps {
+interface TraceExplorerProps {
   serviceName: string;
 }
 
-export default function TraceDataTable({ serviceName }: TraceDataTableProps) {
+export default function TraceExplorer({ serviceName }: TraceExplorerProps) {
   const [data, setData] = React.useState<Trace[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(

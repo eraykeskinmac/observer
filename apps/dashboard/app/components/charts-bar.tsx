@@ -1,77 +1,48 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import {
-  Bar,
   BarChart,
-  ResponsiveContainer,
-  Tooltip,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
+  Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@ui/components/card";
+import { Card, CardHeader, CardContent, CardTitle } from "@ui/components/card";
 
-interface StatusCodeData {
-  minute: string;
-  GroupedStatus: string;
-  count: number;
+interface ServiceMetric {
+  ServiceName: string;
+  SpanCount: number;
 }
 
-interface ChartData {
-  time: string;
-  OK?: number;
-  ERROR?: number;
-  UNSET?: number;
-}
-
-const colors = {
-  OK: "#22c55e",
-  ERROR: "#ef4444",
-  UNSET: "#eab308",
-};
-
-export function ChartsBar({ serviceName }: { serviceName: string }) {
-  const [chartData, setChartData] = useState<ChartData[]>([]);
+const ChartsBar = ({ serviceName }: { serviceName: string }) => {
+  const [chartData, setChartData] = useState<ServiceMetric[]>([]);
 
   useEffect(() => {
-    async function fetchStatusCodeCounts() {
+    async function fetchServiceMetrics() {
       try {
         const response = await fetch(
-          `/api/error-rate-metrics?serviceName=${encodeURIComponent(serviceName)}`
+          `/api/service-metrics?serviceName=${serviceName}`
         );
-        const data: StatusCodeData[] = await response.json();
-
-        const groupedData = data.reduce<Record<string, ChartData>>(
-          (acc, item) => {
-            const time = new Date(item.minute).toLocaleTimeString();
-            if (!acc[time]) {
-              acc[time] = { time };
-            }
-            acc[time][item.GroupedStatus as "OK" | "ERROR" | "UNSET"] =
-              item.count;
-            return acc;
-          },
-          {}
-        );
-
-        setChartData(Object.values(groupedData));
+        const data: ServiceMetric[] = await response.json();
+        setChartData(data);
       } catch (error) {
-        console.error("Error fetching status code counts:", error);
+        console.error("Error fetching service metrics:", error);
       }
     }
 
-    fetchStatusCodeCounts();
+    fetchServiceMetrics();
   }, [serviceName]);
 
   return (
     <Card className="w-full h-[400px] bg-zinc-950 text-zinc-50">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-base font-normal flex items-center">
-          <span className="font-medium mr-1">Status Codes</span>
+          <span className="font-medium mr-1">Service Metrics</span>
           <span className="mx-2 text-zinc-500">/</span>
-          <span className="text-zinc-400 mr-1">Count</span>
+          <span className="text-zinc-400 mr-1">Span Counts</span>
         </CardTitle>
       </CardHeader>
       <CardContent className="pb-4">
@@ -87,7 +58,7 @@ export function ChartsBar({ serviceName }: { serviceName: string }) {
                 stroke="#333"
               />
               <XAxis
-                dataKey="time"
+                dataKey="ServiceName"
                 stroke="#888888"
                 fontSize={12}
                 tickLine={false}
@@ -107,34 +78,17 @@ export function ChartsBar({ serviceName }: { serviceName: string }) {
                 }}
                 itemStyle={{ color: "#ffffff" }}
                 cursor={{ fill: "rgba(255, 255, 255, 0.1)" }}
-                formatter={(value, name) => [
-                  `${value} requests`,
-                  `Status ${name}`,
-                ]}
-                labelFormatter={(label) => `Time: ${label}`}
+                formatter={(value) => [`${value} spans`, "Span Count"]}
+                labelFormatter={(label) => `Service: ${label}`}
               />
-              <Legend
-                verticalAlign="top"
-                height={36}
-                formatter={(value) => (
-                  <span style={{ color: colors[value as keyof typeof colors] }}>
-                    {value}
-                  </span>
-                )}
-              />
-              {Object.keys(colors).map((status) => (
-                <Bar
-                  key={status}
-                  dataKey={status}
-                  stackId="a"
-                  fill={colors[status as keyof typeof colors]}
-                  name={status}
-                />
-              ))}
+              <Legend />
+              <Bar dataKey="SpanCount" fill="#3b82f6" name="Span Count" />
             </BarChart>
           </ResponsiveContainer>
         </div>
       </CardContent>
     </Card>
   );
-}
+};
+
+export default ChartsBar;
