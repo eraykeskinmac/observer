@@ -24,6 +24,8 @@ services:
       - "4001:4001"
     networks:
       - otel-network
+    depends_on:
+      - otel-collector
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
 
@@ -33,6 +35,8 @@ services:
       - "4002:4002"
     networks:
       - otel-network
+    depends_on:
+      - otel-collector
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
 
@@ -42,6 +46,8 @@ services:
       - "4003:4003"
     networks:
       - otel-network
+    depends_on:
+      - otel-collector
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
 
