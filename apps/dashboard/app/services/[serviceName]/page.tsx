@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ServiceSelect } from "../../components/services-select";
-
 import TraceDataTable from "../../components/trace-data-table";
 import { CopilotChat } from "../../components/copilot-chat";
 import Charts from "../../components/charts";
 import ChartsLine from "../../components/charts-line";
 import ChartsBar from "../../components/charts-bar";
+import LatencyHeatmap from "../../components/heatmap-grid-charts";
 
 interface ServiceData {
   ServiceName: string;
@@ -69,6 +69,7 @@ export default function ServiceDetailPage({
         {selectedService}
       </h1>
       <div className="mt-8 space-y-8">
+        <LatencyHeatmap />
         <div>
           <h2 className="text-xl lg:text-2xl font-semibold mb-4">Metrics</h2>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
