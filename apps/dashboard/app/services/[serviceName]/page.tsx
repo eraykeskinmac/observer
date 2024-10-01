@@ -23,7 +23,7 @@ export default function ServiceDetailPage({
   const [serviceData, setServiceData] = useState<ServiceData[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState<string>(
-    decodeURIComponent(params.serviceName)
+    decodeURIComponent(params.serviceName),
   );
 
   useEffect(() => {

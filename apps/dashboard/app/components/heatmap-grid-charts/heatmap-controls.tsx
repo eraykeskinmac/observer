@@ -52,7 +52,7 @@ export const HeatmapControls: React.FC<HeatmapControlsProps> = ({
           <span>
             # of spans:{" "}
             {formatNumber(
-              filteredData.reduce((sum, item) => sum + item.count, 0)
+              filteredData.reduce((sum, item) => sum + item.count, 0),
             )}
           </span>
           <span>Zoom Level: {zoomStack.length}</span>

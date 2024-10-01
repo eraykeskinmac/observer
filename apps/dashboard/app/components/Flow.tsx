@@ -64,7 +64,7 @@ export default function Flow() {
     async function fetchData() {
       try {
         const [serviceNamesResponse, serviceEventsResponse] = await Promise.all(
-          [fetch("/api/services"), fetch("/api/service-metrics")]
+          [fetch("/api/services"), fetch("/api/service-metrics")],
         );
 
         const serviceNames: ServiceName[] = await serviceNamesResponse.json();
@@ -94,7 +94,7 @@ export default function Flow() {
                 events: totalEvents,
               },
             };
-          }
+          },
         );
 
         const newEdges: CustomEdge[] = applicationNodes.map((node, index) => ({
@@ -109,7 +109,7 @@ export default function Flow() {
         setEdges(newEdges);
         setLoading(false);
         const currentService = serviceNames.find((service) =>
-          pathname.includes(encodeURIComponent(service.ServiceName))
+          pathname.includes(encodeURIComponent(service.ServiceName)),
         );
         if (currentService) {
           setSelectedService(currentService.ServiceName);

@@ -40,7 +40,7 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error(
       "Error fetching performance insights from ClickHouse:",
-      error
+      error,
     );
     return new NextResponse("Internal Server Error", { status: 500 });
   }

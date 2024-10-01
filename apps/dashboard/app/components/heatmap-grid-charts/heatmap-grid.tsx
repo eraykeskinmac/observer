@@ -51,7 +51,7 @@ export const HeatmapGrid: React.FC<HeatmapGridProps> = ({
                       gridRow: rowIndex + 1,
                       backgroundColor: getBackgroundColor(
                         item.status,
-                        item.count
+                        item.count,
                       ),
                     }}
                   />

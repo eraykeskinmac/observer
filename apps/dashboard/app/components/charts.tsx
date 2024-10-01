@@ -43,7 +43,7 @@ export default function Charts({ serviceName }: { serviceName: string }) {
     async function fetchOperationAnalytics() {
       try {
         const response = await fetch(
-          `/api/operation-analytics?serviceName=${encodeURIComponent(serviceName)}`
+          `/api/operation-analytics?serviceName=${encodeURIComponent(serviceName)}`,
         );
         const data: OperationAnalyticsData[] = await response.json();
 
@@ -56,11 +56,11 @@ export default function Charts({ serviceName }: { serviceName: string }) {
             acc[time][item.SpanName] = item.operation_count;
             return acc;
           },
-          {}
+          {},
         );
 
         const uniqueOperations = Array.from(
-          new Set(data.map((item) => item.SpanName))
+          new Set(data.map((item) => item.SpanName)),
         );
         setOperations(uniqueOperations);
         setChartData(Object.values(groupedData));

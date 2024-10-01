@@ -127,7 +127,7 @@ export default function TraceExplorer({ serviceName }: TraceExplorerProps) {
   const [data, setData] = React.useState<Trace[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -136,7 +136,7 @@ export default function TraceExplorer({ serviceName }: TraceExplorerProps) {
     async function fetchTraceData() {
       try {
         const response = await fetch(
-          `/api/trace-details?serviceName=${encodeURIComponent(serviceName)}`
+          `/api/trace-details?serviceName=${encodeURIComponent(serviceName)}`,
         );
         const traceData = await response.json();
         setData(traceData);
@@ -226,7 +226,7 @@ export default function TraceExplorer({ serviceName }: TraceExplorerProps) {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -246,7 +246,7 @@ export default function TraceExplorer({ serviceName }: TraceExplorerProps) {
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

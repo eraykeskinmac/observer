@@ -44,7 +44,7 @@ ORDER BY (ServiceName, TraceId, SpanId);
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { service: string } }
+  { params }: { params: { service: string } },
 ) {
   const { messages } = await req.json();
   const serviceName = params.service;

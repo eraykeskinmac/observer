@@ -24,7 +24,7 @@ const ChartsBar = ({ serviceName }: { serviceName: string }) => {
     async function fetchServiceMetrics() {
       try {
         const response = await fetch(
-          `/api/service-metrics?serviceName=${serviceName}`
+          `/api/service-metrics?serviceName=${serviceName}`,
         );
         const data: ServiceMetric[] = await response.json();
         setChartData(data);

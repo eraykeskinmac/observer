@@ -28,7 +28,7 @@ export const getBackgroundColor = (status: string, count: number) => {
 
 export const getLatencyRowIndex = (latency: number) => {
   return LATENCY_RANGES.findIndex(
-    (range) => latency >= range.min && latency < range.max
+    (range) => latency >= range.min && latency < range.max,
   );
 };
 

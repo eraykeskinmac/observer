@@ -36,7 +36,7 @@ export const ServiceSelect: React.FC<ServiceSelectProps> = ({
   };
 
   const selectedNodeId = applicationNodes.find(
-    (node) => node.data.label === selectedService
+    (node) => node.data.label === selectedService,
   )?.id;
 
   return (

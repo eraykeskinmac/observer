@@ -36,7 +36,7 @@ export default function ChartsLine({ serviceName }: { serviceName: string }) {
     async function fetchPerformanceData() {
       try {
         const response = await fetch(
-          `/api/performance-insights?serviceName=${encodeURIComponent(serviceName)}`
+          `/api/performance-insights?serviceName=${encodeURIComponent(serviceName)}`,
         );
         const data = await response.json();
 

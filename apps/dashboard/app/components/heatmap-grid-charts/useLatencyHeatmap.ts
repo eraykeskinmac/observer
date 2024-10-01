@@ -23,12 +23,12 @@ export const useLatencyHeatmap = () => {
     let filtered = data.filter(
       (item) =>
         (showOk && item.status === "OK") ||
-        (showError && item.status === "ERROR")
+        (showError && item.status === "ERROR"),
     );
     if (currentZoomRange && Array.isArray(currentZoomRange)) {
       const [start, end] = currentZoomRange as [Date, Date];
       filtered = filtered.filter(
-        (item) => new Date(item.time) >= start && new Date(item.time) <= end
+        (item) => new Date(item.time) >= start && new Date(item.time) <= end,
       );
     }
     return filtered;
@@ -42,8 +42,8 @@ export const useLatencyHeatmap = () => {
     return [0, 0.25, 0.5, 0.75, 1].map((ratio) =>
       format(
         new Date(start.getTime() + (end.getTime() - start.getTime()) * ratio),
-        "HH:mm:ss"
-      )
+        "HH:mm:ss",
+      ),
     );
   }, [endTime, currentZoomRange]);
 
@@ -63,12 +63,12 @@ export const useLatencyHeatmap = () => {
         const heatmapRect = heatmapRef.current.getBoundingClientRect();
         const currentX = Math.max(
           0,
-          Math.min(e.clientX - heatmapRect.left, heatmapRect.width)
+          Math.min(e.clientX - heatmapRect.left, heatmapRect.width),
         );
         setBrushEnd(currentX);
       }
     },
-    [isBrushing]
+    [isBrushing],
   );
 
   const handleMouseUp = useCallback(() => {
