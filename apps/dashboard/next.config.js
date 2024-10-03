@@ -7,6 +7,7 @@ const nextConfig = {
     CLICKHOUSE_USERNAME: process.env.CLICKHOUSE_USERNAME,
     CLICKHOUSE_PASSWORD: process.env.CLICKHOUSE_PASSWORD,
     CLICKHOUSE_DATABASE: process.env.CLICKHOUSE_DATABASE,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
   webpack: (config, { isServer }) => {
     if (!isServer) {
