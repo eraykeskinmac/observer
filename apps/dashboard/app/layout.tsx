@@ -2,7 +2,6 @@ import "@ui/styles/globals.css";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import { Inter } from "next/font/google";
-import Sidebar from "./components/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +25,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="flex h-screen bg-background text-foreground">
-            <Sidebar />
             <main className="flex-1 overflow-auto pl-16">{children}</main>
           </div>
         </ThemeProvider>
