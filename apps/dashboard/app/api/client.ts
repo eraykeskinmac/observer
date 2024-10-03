@@ -1,20 +1,25 @@
 import { createClient } from "@clickhouse/client";
 
-console.log('ClickHouse Environment Variables:', {
-  CLICKHOUSE_HOST: process.env.CLICKHOUSE_HOST,
-  CLICKHOUSE_USERNAME: process.env.CLICKHOUSE_USERNAME,
-  CLICKHOUSE_DATABASE: process.env.CLICKHOUSE_DATABASE,
-});
+const host = process.env.CLICKHOUSE_HOST || '';
+const username = process.env.CLICKHOUSE_USERNAME || '';
+const password = process.env.CLICKHOUSE_PASSWORD || '';
+const database = process.env.CLICKHOUSE_DATABASE || '';
 
-if (!process.env.CLICKHOUSE_HOST) {
+console.log('ClickHouse Connection Info:', { host, username, database });
+
+if (!host) {
   throw new Error('CLICKHOUSE_HOST is not defined');
 }
 
+const url = new URL(host);
+url.username = username;
+url.password = password;
+if (database) {
+  url.pathname = `/${database}`;
+}
+
 const client = createClient({
-  url: process.env.CLICKHOUSE_HOST,
-  username: process.env.CLICKHOUSE_USERNAME || '',
-  password: process.env.CLICKHOUSE_PASSWORD || '',
-  database: process.env.CLICKHOUSE_DATABASE || '',
+  url: url.toString(),
 });
 
 export default client;
