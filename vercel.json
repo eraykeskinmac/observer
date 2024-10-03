@@ -1,0 +1,18 @@
+{
+  "env": {
+    "CLICKHOUSE_HOST": "@clickhouse_host",
+    "CLICKHOUSE_USERNAME": "@clickhouse_username",
+    "CLICKHOUSE_PASSWORD": "@clickhouse_password",
+    "CLICKHOUSE_DATABASE": "@clickhouse_database",
+    "OPENAI_API_KEY": "@openai_api_key"
+  },
+  "build": {
+    "env": {
+      "CLICKHOUSE_HOST": "@clickhouse_host",
+      "CLICKHOUSE_USERNAME": "@clickhouse_username",
+      "CLICKHOUSE_PASSWORD": "@clickhouse_password",
+      "CLICKHOUSE_DATABASE": "@clickhouse_database",
+      "OPENAI_API_KEY": "@openai_api_key"
+    }
+  }
+}
