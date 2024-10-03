@@ -35,7 +35,6 @@ export async function GET(request: Request) {
     if (!data) {
       throw new Error("Empty response from ClickHouse");
     }
-    console.log("Fetched performance insights from ClickHouse:", data);
     return NextResponse.json(data);
   } catch (error) {
     console.error(

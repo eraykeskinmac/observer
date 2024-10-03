@@ -1,10 +1,16 @@
 import { createClient } from "@clickhouse/client";
 
 const client = createClient({
-  host: process.env.CLICKHOUSE_HOST || '',
-  username: process.env.CLICKHOUSE_USERNAME || '',
-  password: process.env.CLICKHOUSE_PASSWORD || '',
-  database: process.env.CLICKHOUSE_DATABASE || '',
+  host: process.env.CLICKHOUSE_HOST,
+  username: process.env.CLICKHOUSE_USERNAME,
+  password: process.env.CLICKHOUSE_PASSWORD,
+  database: process.env.CLICKHOUSE_DATABASE,
+});
+
+console.log('ClickHouse Connection Info:', {
+  host: process.env.CLICKHOUSE_HOST,
+  username: process.env.CLICKHOUSE_USERNAME,
+  database: process.env.CLICKHOUSE_DATABASE,
 });
 
 export default client;

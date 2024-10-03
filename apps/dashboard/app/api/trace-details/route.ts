@@ -41,7 +41,6 @@ export async function GET(request: Request) {
     if (!Array.isArray(data) || data.length === 0) {
       throw new Error("Empty or invalid response from ClickHouse");
     }
-    console.log(`Fetched trace details from ClickHouse for ${serviceName}`);
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching trace details from ClickHouse:", error);

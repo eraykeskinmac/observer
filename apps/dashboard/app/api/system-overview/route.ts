@@ -22,7 +22,6 @@ export async function GET() {
     if (!data) {
       throw new Error("Empty response from ClickHouse");
     }
-    console.log("Fetched system overview from ClickHouse:", data);
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching system overview from ClickHouse:", error);

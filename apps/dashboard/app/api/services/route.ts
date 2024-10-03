@@ -14,7 +14,6 @@ export async function GET() {
       throw new Error("Empty response from ClickHouse");
     }
 
-    console.log("Fetched data from ClickHouse:", data);
 
     return NextResponse.json(data);
   } catch (error) {

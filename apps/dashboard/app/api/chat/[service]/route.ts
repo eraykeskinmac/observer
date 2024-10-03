@@ -56,7 +56,6 @@ export async function POST(
     });
   }
 
-  console.log("Analyzing service:", serviceName);
 
   const sqlQueryResponse = await openai.chat.completions.create({
     model: "gpt-4",
@@ -89,7 +88,6 @@ Do not provide any explanation, just the SQL queries.`,
     throw new Error("Failed to generate SQL queries");
   }
 
-  console.log("Generated SQL queries:", sqlQueries);
 
   let queryResults = [];
   try {
@@ -103,7 +101,6 @@ Do not provide any explanation, just the SQL queries.`,
       });
       queryResults.push(await result.json());
     }
-    console.log("Query results:", JSON.stringify(queryResults, null, 2));
   } catch (error) {
     console.error("ClickHouse query error:", error);
     queryResults = [

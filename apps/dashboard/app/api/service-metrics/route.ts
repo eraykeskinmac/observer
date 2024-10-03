@@ -28,7 +28,6 @@ export async function GET(request: Request) {
       throw new Error("Empty response from ClickHouse");
     }
 
-    console.log("Fetched event counts from ClickHouse:", data);
 
     return NextResponse.json(data);
   } catch (error) {

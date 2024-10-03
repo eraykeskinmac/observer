@@ -40,7 +40,6 @@ export default function ChartsLine({ serviceName }: { serviceName: string }) {
         );
         const data = await response.json();
 
-        console.log("API'den gelen veri:", data);
 
         const formattedData = data.map((item: PerformanceData) => ({
           time: new Date(item.minute).toLocaleTimeString([], {
@@ -52,7 +51,6 @@ export default function ChartsLine({ serviceName }: { serviceName: string }) {
           p95: item.p95_duration / 1000,
         }));
 
-        console.log("Formatlanmış veri:", formattedData);
 
         setChartData(formattedData);
       } catch (error) {
