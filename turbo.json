@@ -4,6 +4,7 @@
     "**/.env.*local"
   ],
   "globalEnv": [
+    "OPENAI_API_KEY",
     "CLICKHOUSE_ENDPOINT",
     "CLICKHOUSE_DATABASE",
     "CLICKHOUSE_USERNAME",
