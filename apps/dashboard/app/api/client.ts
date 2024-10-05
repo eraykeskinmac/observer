@@ -1,10 +1,10 @@
 import { createClient } from "@clickhouse/client";
 
 const client = createClient({
-  url: "https://ing1s0a8r4.eu-west-1.aws.clickhouse.cloud:8443",
-  username: "default",
-  password: "N81NSgNIW~LRD",
-  database: "default",
+  url: process.env.CLICKHOUSE_HOST,
+  username: process.env.CLICKHOUSE_USERNAME || "default",
+  password: process.env.CLICKHOUSE_PASSWORD || "",
+  database: process.env.CLICKHOUSE_DATABASE || "",
 });
 
 async function testConnection() {
