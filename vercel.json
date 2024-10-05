@@ -1,0 +1,14 @@
+{
+  "functions": {
+    "api/**/*": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "env": {
+    "CLICKHOUSE_HOST": "@clickhouse_host",
+    "CLICKHOUSE_USERNAME": "@clickhouse_username",
+    "CLICKHOUSE_PASSWORD": "@clickhouse_password",
+    "CLICKHOUSE_DATABASE": "@clickhouse_database"
+  }
+}
