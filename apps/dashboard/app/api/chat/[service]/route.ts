@@ -3,6 +3,10 @@ import { OpenAIStream, StreamingTextResponse } from "ai";
 import OpenAI from "openai";
 import client from "../../client";
 
+export const config = {
+  runtime: 'nodejs',
+};
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });

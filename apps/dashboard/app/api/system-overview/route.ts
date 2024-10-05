@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import client from "../client";
 
+export const config = {
+  runtime: 'nodejs',
+};
+
 export async function GET() {
   try {
     const result = await client.query({

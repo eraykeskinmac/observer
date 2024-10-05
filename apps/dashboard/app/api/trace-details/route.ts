@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import client from "../client";
 
+export const config = {
+  runtime: 'nodejs',
+};
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const serviceName = searchParams.get("serviceName");
