@@ -4,7 +4,7 @@ import OpenAI from "openai";
 import client from "../../client";
 
 export const config = {
-  runtime: 'nodejs',
+  runtime: 'edge',
 };
 
 const openai = new OpenAI({

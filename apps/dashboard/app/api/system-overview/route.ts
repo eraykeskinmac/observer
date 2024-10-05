@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import client from "../client";
 
 export const config = {
-  runtime: 'nodejs',
+  runtime: 'edge',
 };
 
 export async function GET() {
