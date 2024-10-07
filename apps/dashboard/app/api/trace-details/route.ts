@@ -1,19 +1,16 @@
 import { NextResponse } from "next/server";
-import client from "../client";
-
-
+import { getClient } from "../client";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const serviceName = searchParams.get("serviceName");
 
   if (!serviceName) {
-    return new NextResponse("Service name and Trace ID are required", {
-      status: 400,
-    });
+    return new NextResponse("Service name is required", { status: 400 });
   }
 
   try {
+    const client = getClient();
     const result = await client.query({
       query: `
         SELECT
@@ -40,9 +37,12 @@ export async function GET(request: Request) {
     });
 
     const data = await result.json();
+
     if (!Array.isArray(data) || data.length === 0) {
-      throw new Error("Empty or invalid response from ClickHouse");
+      console.warn("Empty response from ClickHouse for service:", serviceName);
+      return NextResponse.json([]);
     }
+
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching trace details from ClickHouse:", error);

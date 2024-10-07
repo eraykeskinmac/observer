@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
-import client from "../client";
+import { getClient } from "../client";
 
 
 
 export async function GET() {
+
   try {
+    const client = getClient();
     const result = await client.query({
       query: "SELECT DISTINCT ServiceName FROM default.otel_traces",
       format: "JSONEachRow",

@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import client from "../client";
-
-
+import { getClient } from "../client";
 
 export async function GET() {
   try {
+    const client = getClient();
     const result = await client.query({
       query: `
         SELECT
@@ -21,9 +20,12 @@ export async function GET() {
     });
 
     const data = await result.json();
-    if (!data) {
-      throw new Error("Empty response from ClickHouse");
+
+    if (!Array.isArray(data) || data.length === 0) {
+      console.warn("Empty or invalid response from ClickHouse for system overview");
+      return NextResponse.json([]);
     }
+
     return NextResponse.json(data);
   } catch (error) {
     console.error("Error fetching system overview from ClickHouse:", error);

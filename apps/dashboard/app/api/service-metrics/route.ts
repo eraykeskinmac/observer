@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import client from "../client";
+import { getClient } from "../client";
 
 
 
@@ -7,6 +7,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const serviceName = searchParams.get("serviceName");
   try {
+    const client = getClient();
     const result = await client.query({
       query: `
     SELECT

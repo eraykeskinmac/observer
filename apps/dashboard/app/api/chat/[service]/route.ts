@@ -1,9 +1,7 @@
 import { NextRequest } from "next/server";
 import { OpenAIStream, StreamingTextResponse } from "ai";
 import OpenAI from "openai";
-import client from "../../client";
-
-
+import { getClient } from "../../client";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -58,7 +56,6 @@ export async function POST(
     });
   }
 
-
   const sqlQueryResponse = await openai.chat.completions.create({
     model: "gpt-4",
     messages: [
@@ -90,9 +87,9 @@ Do not provide any explanation, just the SQL queries.`,
     throw new Error("Failed to generate SQL queries");
   }
 
-
   let queryResults = [];
   try {
+    const client = getClient();
     const queries = sqlQueries
       .split(";")
       .filter((query) => query.trim() !== "");
