@@ -9,6 +9,7 @@ export function getClient() {
       username: "default",
       password: "N81NSgNIW~LRD",
       database: "default",
+      request_timeout: 5000,
     });
   }
   return client;
