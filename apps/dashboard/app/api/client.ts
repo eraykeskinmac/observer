@@ -5,10 +5,10 @@ let client: ReturnType<typeof createClient> | null = null;
 export function getClient() {
   if (!client) {
     client = createClient({
-      url: process.env.CLICKHOUSE_HOST,
-      username: process.env.CLICKHOUSE_USERNAME || "default",
-      password: process.env.CLICKHOUSE_PASSWORD || "",
-      database: process.env.CLICKHOUSE_DATABASE || "",
+      url: "https://ing1s0a8r4.eu-west-1.aws.clickhouse.cloud:8443",
+      username: "default",
+      password: "default",
+      database: "N81NSgNIW~LRD",
     });
   }
   return client;
