@@ -7,8 +7,8 @@ export function getClient() {
     client = createClient({
       url: "https://ing1s0a8r4.eu-west-1.aws.clickhouse.cloud:8443",
       username: "default",
-      password: "default",
-      database: "N81NSgNIW~LRD",
+      password: "N81NSgNIW~LRD",
+      database: "default",
     });
   }
   return client;
